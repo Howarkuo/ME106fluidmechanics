@@ -19,3 +19,6 @@
 - Matrix algebra techniques
 - Runge-Kutta Methods 
 - Project: UnSteady flow solution for Re=60
+
+## Discussion- Different Approaches for Questions  
+- Torque of Concentric-cylinder viscometer Inner cylinder (To know the torque transmitted through liquid to the inner cylinder) : Rotation -> Velocity Difference -> **Shear Stress / divide by area**-> **Shear Force** ->  Torque
