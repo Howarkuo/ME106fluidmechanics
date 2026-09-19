@@ -25,6 +25,9 @@
 
 ### HW1: Density, Specific Weight, Specific Gravity, Ideal Gas Law, Viscosity, Compressibility of Fluids, Bulk Modulus, Compression and Expansion of Gases, Vapor Pressure, Surface Tension
 ## Surface Tension: Liquis maintains a shape @ fluid fluid interface due to cohesive forces 
+![Surfacetension_intui.png](Surfacetension_intui.png)
+![surfacetension_spher.png](surfacetension_spher.png)
+
 
 #### Viscosity Profile and Shear Stress
 
