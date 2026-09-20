@@ -82,8 +82,9 @@ $$T_{\text{bottom}} = \int_{0}^{R_i} r \cdot \left(\mu \frac{\Omega r}{h_b}\righ
 $$T_{\text{total}} = T_{\text{side}} + T_{\text{bottom}} = 2\pi \mu \Omega R_i^3 \left( \frac{H}{\Delta r} + \frac{R_i}{4 h_b} \right)$$
 ---
 
-### HW2: 
-
+### HW2: Pressure at a pt, pressure field equation , pressure variation in a fluid a rest incompress v.s compress , manometry (piezometer, u-tube, inclined tube) , hydrostatic forece on a plane surface , pressure prism , buoyancy , flotation and stability 
+- Known Manometer  Open surface with atomospheric pressure to derive connected piston pressure and force 
+- 
 
 
 ## Discussion- Different Approaches for Questions  
