@@ -82,9 +82,18 @@ $$T_{\text{bottom}} = \int_{0}^{R_i} r \cdot \left(\mu \frac{\Omega r}{h_b}\righ
 $$T_{\text{total}} = T_{\text{side}} + T_{\text{bottom}} = 2\pi \mu \Omega R_i^3 \left( \frac{H}{\Delta r} + \frac{R_i}{4 h_b} \right)$$
 ---
 
+## W2 , W3 Fluid statics and Elementart Fluid Dynamics
+- 2.1 Pascal Law - pressure at a pts in all direction are the same
+- 2.2 General Equtation of liquid in motion under gravity (thought process: taylor expansion of Pressure at different points with Volume and Area of a Wedge liquid object under water)
+- 
+
+
+
+
 ### HW2: Pressure at a pt, pressure field equation , pressure variation in a fluid a rest incompress v.s compress , manometry (piezometer, u-tube, inclined tube) , hydrostatic forece on a plane surface , pressure prism , buoyancy , flotation and stability 
 - Known Manometer  Open surface with atomospheric pressure to derive connected piston pressure and force 
-- 
+### HW3:
+
 
 
 ## Discussion- Different Approaches for Questions  
