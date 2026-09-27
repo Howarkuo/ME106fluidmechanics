@@ -87,7 +87,11 @@ $$T_{\text{total}} = T_{\text{side}} + T_{\text{bottom}} = 2\pi \mu \Omega R_i^3
 - 2.2 General Equtation of liquid in motion under gravity (thought process: taylor expansion of Pressure at different points with Volume and Area of a Wedge liquid object under water)
 $${\rho\left[\frac{\partial\mathbf V}{\partial t}+(\mathbf V\cdot\nabla)\mathbf V\right]=-\nabla P+\rho\mathbf g}\]$$
 - 2.2.1 : Fluid Static equation  $$\nabla P=\rho\mathbf g$$ , $$\frac{\partial P}{\partial x}=0,\qquad\frac{\partial P}{\partial y}=0,\qquad\frac{\partial P}{\partial z}=-\rho g$$
-
+- 2.2.2 : Bernouli Equation derivation 1- Euler momentum equation -> (projection along stream line ) -> streamwise momentum equation -> Bernouli Equation
+- 2.2.2.1: Bernouli Equation with static fluid (V=0) -> fluid static term
+- 2.2.3 : Bernoulli from an energy balance
+- 2.2.4 : Criteria for Bernouli equation: Inviscid , Incompressible/ constant density , Steady / dV/dt =0
+- 
 
 
 
