@@ -93,7 +93,16 @@ $${\rho\left[\frac{\partial\mathbf V}{\partial t}+(\mathbf V\cdot\nabla)\mathbf 
 - 2.2.2.1: Bernouli Equation with static fluid (V=0) -> fluid static term , start from the stream line momentum equation $$[-\frac{dp}{ds}-\rho g\frac{dz}{ds}=\rho V\frac{dV}{ds}.\]$$ -> $$\[\int\frac{dp}{\rho}+\int V\,dV+\int g\,dz=0.\]$$ -> $$\[{p+\frac12\rho V^2+\rho gz=C.}$$
 - 2.2.3 : Bernoulli from an energy balance, same result 
 - 2.2.4 : Criteria for Bernouli equation: Inviscid , Incompressible/ constant density , Steady / dV/dt =0
-- 
+![Page01.png](Page01.png)
+![Page02.png](Page01.png)
+![Page03.png](Page01.png)
+![Page04.png](Page01.png)
+![Page05.png](Page01.png)
+![Page06.png](Page01.png)
+![Page07.png](Page01.png)
+![Page08.png](Page01.png)
+![Page09.png](Page01.png)
+![Page10.png](Page01.png)
 
 
 
