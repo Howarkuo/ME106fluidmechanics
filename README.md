@@ -94,15 +94,15 @@ $${\rho\left[\frac{\partial\mathbf V}{\partial t}+(\mathbf V\cdot\nabla)\mathbf 
 - 2.2.3 : Bernoulli from an energy balance, same result 
 - 2.2.4 : Criteria for Bernouli equation: Inviscid , Incompressible/ constant density , Steady / dV/dt =0
 ![Page01.png](Page01.png)
-![Page02.png](Page01.png)
-![Page03.png](Page01.png)
-![Page04.png](Page01.png)
-![Page05.png](Page01.png)
-![Page06.png](Page01.png)
-![Page07.png](Page01.png)
-![Page08.png](Page01.png)
-![Page09.png](Page01.png)
-![Page10.png](Page01.png)
+![Page02.png](Page02.png)
+![Page03.png](Page03.png)
+![Page04.png](Page04.png)
+![Page05.png](Page05.png)
+![Page06.png](Page06.png)
+![Page07.png](Page07.png)
+![Page08.png](Page08.png)
+![Page09.png](Page09.png)
+![Page10.png](Page10.png)
 
 
 
