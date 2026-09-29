@@ -84,6 +84,16 @@ $$T_{\text{total}} = T_{\text{side}} + T_{\text{bottom}} = 2\pi \mu \Omega R_i^3
 
 ## W2 , W3 Fluid statics and Elementart Fluid Dynamics
 ## Fluid Statics - Pressure variation in a fluid at rest  / Bernoulli Equation : Derivation of streamline and normal components of the momentum equation 
+## Look out for direction: the pressure force direction is opposite to delta P , the coordinate z has opposite direction than gravity 
+$${-\nabla P+\rho\mathbf g=\rho\mathbf a}$$
+Here:
+- \(P\): scalar pressure
+- $$\(\nabla P\)$$: vector pointing toward increasing pressure
+- $$\(-\nabla P\)$$: pressure-force vector per unit volume
+- $$\(\mathbf g\)$$: gravity acceleration vector
+- $$\(\mathbf a\)$$: fluid acceleration vector
+- $$\(\rho\)$$: scalar density
+
 - 2.1 Pascal Law - pressure at a pts in all direction are the same
 - 2.2 General Equtation of liquid in motion under gravity (thought process: taylor expansion of Pressure at different points with Volume and Area of a Wedge liquid object under water)
 $${\rho\left[\frac{\partial\mathbf V}{\partial t}+(\mathbf V\cdot\nabla)\mathbf V\right]=-\nabla P+\rho\mathbf g}\]$$
