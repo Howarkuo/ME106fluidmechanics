@@ -86,7 +86,9 @@ $$T_{\text{total}} = T_{\text{side}} + T_{\text{bottom}} = 2\pi \mu \Omega R_i^3
 ## Fluid Statics - Pressure variation in a fluid at rest  / Bernoulli Equation : Derivation of streamline and normal components of the momentum equation 
 ## Look out for direction: the pressure force direction is opposite to delta P , the coordinate z has opposite direction than gravity 
 $${-\nabla P+\rho\mathbf g=\rho\mathbf a}$$
-Here:
+$${-\frac{dP}{ds}-\rho g\frac{dz}{ds}=\rho a_s}$$
+$$\[a_s=V\frac{dV}{ds}.\]$$ for steady flow 
+-Here:
 - \(P\): scalar pressure
 - $$\(\nabla P\)$$: vector pointing toward increasing pressure
 - $$\(-\nabla P\)$$: pressure-force vector per unit volume
