@@ -124,7 +124,9 @@ $${\rho\left[\frac{\partial\mathbf V}{\partial t}+(\mathbf V\cdot\nabla)\mathbf 
 - Question 2: If replace the constant density  by the pressure-dependent density, how to solve new Bernouli balance equation? > replace density into  conservation of momentum equation in the inviscid fluid before integration
 $${\rho(P)=aP+b}$$
 $$\[\int\frac{dP}{aP+b}+\int V\,dV+\int g\,dz=C.\]$$
-- 
+### Q3> What pressure gradient is needed when the fluid changes speed?
+### Q4> What pressure gradient is needed when the fluid changes direction?
+- Question 4: normal pressure gradient (normal to the streamline) , with Different Curvature of Bended- Inner and Outer Aorta wall and normal vector of accerleration 
 ### HW3:
 
 
