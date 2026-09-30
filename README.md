@@ -120,7 +120,11 @@ $${\rho\left[\frac{\partial\mathbf V}{\partial t}+(\mathbf V\cdot\nabla)\mathbf 
 
 
 ### HW2: Pressure at a pt, pressure field equation , pressure variation in a fluid a rest incompress v.s compress , manometry (piezometer, u-tube, inclined tube) , hydrostatic forece on a plane surface , pressure prism , buoyancy , flotation and stability 
-- Known Manometer  Open surface with atomospheric pressure to derive connected piston pressure and force 
+- Known Manometer  Open surface with atomospheric pressure to derive connected piston pressure and force
+- Question 2: If replace the constant density  by the pressure-dependent density, how to solve new Bernouli balance equation? > replace density into  conservation of momentum equation in the inviscid fluid before integration
+$${\rho(P)=aP+b}$$
+$$\[\int\frac{dP}{aP+b}+\int V\,dV+\int g\,dz=C.\]$$
+- 
 ### HW3:
 
 
