@@ -577,3 +577,154 @@ Key observations:
 
 **Overall, this velocity field is an example of a two-dimensional planar stagnation-point flow.**
 
+## Question 5(b): Velocity Field and Streamlines for \(u=Cx^2,\; v=Cy^2\)
+
+![Velocity Field and Streamlines](me106_hw4_v2.png)
+
+
+### Given Velocity Field
+
+The two-dimensional velocity field is
+
+$$
+\mathbf{V}=\langle u,v\rangle
+$$
+
+where
+
+$$
+u=Cx^2,\qquad v=Cy^2
+$$
+
+with
+
+$$
+C=0.05.
+$$
+
+### Streamline Equation
+
+For a streamline,
+
+$$
+\frac{dy}{dx}=\frac{v}{u}.
+$$
+
+Substituting the velocity components,
+
+$$
+\frac{dy}{dx}=\frac{Cy^2}{Cx^2}=\frac{y^2}{x^2}.
+$$
+
+Separating variables,
+
+$$
+\frac{dy}{y^2}=\frac{dx}{x^2}.
+$$
+
+Integrating,
+
+$$
+\int y^{-2}\,dy=\int x^{-2}\,dx
+$$
+
+$$
+-\frac{1}{y}=-\frac{1}{x}+K
+$$
+
+which can be rewritten as
+
+$$
+\boxed{\frac{1}{y}-\frac{1}{x}=K}
+$$
+
+This is the analytical equation for the family of streamlines.
+
+### MATLAB Code
+
+```matlab
+C = 0.05;
+
+[x,y] = meshgrid(-5:1:5, -5:1:5);
+
+% Velocity field
+u = C*x.^2;
+v = C*y.^2;
+
+figure;
+quiver(x,y,u,v,0);
+hold on;
+
+% Streamline seed points
+s = linspace(-5,5,21);
+startx = [s, -5*ones(size(s))];
+starty = [-5*ones(size(s)), s];
+
+streamline(x,y,u,v,startx,starty);
+
+xlabel('x');
+ylabel('y');
+axis equal;
+xlim([-5 5]);
+ylim([-5 5]);
+grid on;
+title('Velocity Field and Streamlines: u = Cx^2, v = Cy^2');
+```
+
+### Interpretation of the Velocity Field
+
+Since
+
+$$
+u=Cx^2\ge 0,\qquad v=Cy^2\ge 0,
+$$
+
+both velocity components are always nonnegative. Therefore, the flow always points to the right and upward, except at the origin where the velocity is zero.
+
+At the origin,
+
+$$
+u(0,0)=0,\qquad v(0,0)=0,
+$$
+
+so the origin is a stagnation point.
+
+### Why Only Part of the Streamlines May Appear
+
+The `streamline()` function traces curves in the direction of the velocity field from the chosen seed points. Because the flow always moves to the right and upward, starting streamlines from the top boundary causes many of them to immediately leave the domain. Seeding from the bottom and left boundaries gives a more complete visualization.
+
+### Physical Plausibility
+
+To check whether the flow is compatible with steady incompressible constant-density flow, compute the divergence:
+
+$$
+\nabla\cdot\mathbf V
+=\frac{\partial u}{\partial x}
++
+\frac{\partial v}{\partial y}
+=\frac{\partial (Cx^2)}{\partial x}
++
+\frac{\partial (Cy^2)}{\partial y}
+=2Cx+2Cy.
+$$
+
+Thus,
+
+$$
+\boxed{\nabla\cdot\mathbf V = 2C(x+y)}
+$$
+
+which is generally not zero.
+
+Therefore, this velocity field does not satisfy the incompressible continuity equation everywhere, so it is not generally a physically plausible steady incompressible flow for a constant-density fluid.
+
+### Conclusion
+
+The streamline plot is consistent with the analytical relation
+
+$$
+\frac{1}{y}-\frac{1}{x}=K.
+$$
+
+The vector field correctly points to the upper right throughout the domain. However, only some streamlines are shown if seed points are chosen on just one boundary. This field is mathematically valid, but it is not generally a physically plausible incompressible flow because its divergence is not zero.
+
