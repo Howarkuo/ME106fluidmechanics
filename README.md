@@ -318,3 +318,262 @@ At an approximately $40\text{ mph}$ freestream speed and $15^\circ$ angle of att
 The Reynolds Transport Theorem shows that, for a steady fixed control volume bounded by impermeable walls, incoming and outgoing mass flow rates are equal even when the outlet velocity is nonuniform. The material derivative relates the deflection of fluid paths to convective acceleration, and the momentum form of RTT relates changes in momentum flux and external forces to aerodynamic loading.
 
 These equations explain what the fog visualization represents, while measured velocity profiles, curvature, pressures, wing reference area, and forces would be needed to quantify acceleration, lift, or drag.
+
+
+
+# ME 106 Fluid Mechanics — Homework 4
+
+## Question 5: Velocity Fields and Streamlines
+
+### Objective
+
+Visualize a two-dimensional velocity field and its associated streamlines using MATLAB. Derive the streamline equations analytically and evaluate whether the velocity field represents a physically plausible flow.
+
+### 1. Given Velocity Field
+
+The two-dimensional, steady velocity field is defined as
+
+$$
+\mathbf{V}=\langle u,v\rangle
+$$
+
+where
+
+$$
+u=Cy,\qquad v=Cx
+$$
+
+with
+
+$$
+C=0.05
+$$
+
+The computational domain is
+
+$$
+-5\leq x\leq 5,\qquad -5\leq y\leq 5.
+$$
+
+### 2. Analytical Derivation of Streamlines
+
+A streamline is a curve whose tangent direction is aligned with the instantaneous velocity vector.
+
+For a two-dimensional flow,
+
+$$
+\frac{dy}{dx}=\frac{v}{u}.
+$$
+
+Substituting the velocity components,
+
+$$
+\frac{dy}{dx}=\frac{Cx}{Cy}=\frac{x}{y}.
+$$
+
+Separating variables,
+
+$$
+y\,dy=x\,dx.
+$$
+
+Integrating both sides,
+
+$$
+\int y\,dy=\int x\,dx
+$$
+
+$$
+\frac{y^2}{2}=\frac{x^2}{2}+K_1.
+$$
+
+Rearranging,
+
+$$
+\boxed{y^2-x^2=K}
+$$
+
+This equation describes a family of hyperbolas.
+
+**Streamline classification:**
+
+- **K > 0:** Hyperbolas opening upward and downward.
+- **K < 0:** Hyperbolas opening leftward and rightward.
+- **K = 0:** Straight-line separatrices, given by \(y=\pm x\).
+
+### 3. MATLAB Implementation
+
+```matlab
+C = 0.05;
+
+% Generate computational grid
+[x,y] = meshgrid(-5:1:5, -5:1:5);
+
+% Define velocity field
+u = C*y;
+v = C*x;
+
+% Plot velocity vectors without autoscaling
+figure;
+quiver(x,y,u,v,0);
+hold on;
+
+% Define streamline starting points
+s = linspace(-5,5,21);
+
+% Seed streamlines from all four boundaries
+startx = [s, s, -5*ones(size(s)), 5*ones(size(s))];
+starty = [-5*ones(size(s)), 5*ones(size(s)), s, s];
+
+% Plot streamlines
+streamline(x,y,u,v,startx,starty);
+
+% Figure formatting
+xlabel('x');
+ylabel('y');
+axis equal;
+xlim([-5 5]);
+ylim([-5 5]);
+grid on;
+title('Velocity Field and Streamlines: u = Cy, v = Cx');
+```
+
+The MATLAB `quiver()` function visualizes the velocity vector field, while `streamline()` numerically integrates the velocity field to construct streamlines.
+
+Setting the last argument of `quiver()` to `0` disables automatic scaling, preserving the velocity-vector magnitudes in plot coordinates.
+
+### 4. Velocity Field Visualization
+
+![Velocity Field and Streamlines](me106_hw4_v1.png)
+
+**Figure 1.** Two-dimensional velocity field and streamlines for \(u=Cy\), \(v=Cx\), with \(C=0.05\). Blue arrows represent velocity vectors, while orange curves represent streamlines.
+
+### 5. Velocity Direction Analysis
+
+The velocity components depend on the spatial coordinates:
+
+$$
+u=Cy,\qquad v=Cx.
+$$
+
+| Region | Horizontal Velocity (u) | Vertical Velocity (v) | Flow Direction |
+|---|---|---|---|
+| Quadrant I | Positive | Positive | Northeast |
+| Quadrant II | Positive | Negative | Southeast |
+| Quadrant III | Negative | Negative | Southwest |
+| Quadrant IV | Negative | Positive | Northwest |
+
+For example, at the location \((x,y)=(3,2)\),
+
+$$
+\mathbf V(3,2)
+=\langle 0.05(2),0.05(3)\rangle
+=\langle 0.10,0.15\rangle.
+$$
+
+The flow points toward the northeast.
+
+At \((x,y)=(-3,2)\),
+
+$$
+\mathbf V(-3,2)=\langle 0.10,-0.15\rangle.
+$$
+
+The flow points toward the southeast.
+
+### 6. Physical Interpretation
+
+#### 6.1 Stagnation Point
+
+At the origin,
+
+$$
+u(0,0)=0,\qquad v(0,0)=0.
+$$
+
+Therefore,
+
+$$
+\boxed{\mathbf V(0,0)=\mathbf 0}
+$$
+
+The origin is a **stagnation point**, where the local fluid velocity vanishes.
+
+The flow approaches the stagnation point along the horizontal axis and moves away along the vertical axis.
+
+This velocity pattern is characteristic of a two-dimensional stagnation-point flow.
+
+#### 6.2 Continuity Equation
+
+For a steady, incompressible fluid with constant density, conservation of mass requires
+
+$$
+\nabla\cdot\mathbf V=0.
+$$
+
+In Cartesian coordinates,
+
+$$
+\frac{\partial u}{\partial x}
++\frac{\partial v}{\partial y}=0.
+$$
+
+Substituting the given velocity components,
+
+$$
+\frac{\partial (Cy)}{\partial x}
++\frac{\partial (Cx)}{\partial y}
+=0+0=0.
+$$
+
+Therefore,
+
+$$
+\boxed{\nabla\cdot\mathbf V=0}
+$$
+
+The velocity field satisfies the incompressible continuity equation.
+
+#### 6.3 Vorticity
+
+For a two-dimensional velocity field, the out-of-plane vorticity is
+
+$$
+\omega_z=\frac{\partial v}{\partial x}
+-\frac{\partial u}{\partial y}.
+$$
+
+Substituting,
+
+$$
+\omega_z=C-C=0.
+$$
+
+Thus,
+
+$$
+\boxed{\omega_z=0}
+$$
+
+The flow is irrotational.
+
+### 7. Conclusion
+
+The velocity field
+
+$$
+\mathbf V=\langle Cy,Cx\rangle
+$$
+
+represents a mathematically consistent and physically plausible idealized steady incompressible flow.
+
+Key observations:
+
+1. The streamlines form hyperbolas described by \(y^2-x^2=K\).
+2. The origin is a stagnation point.
+3. Fluid approaches the origin along the horizontal axis and departs along the vertical axis.
+4. The velocity field is divergence-free, satisfying incompressible mass conservation.
+5. The flow has zero vorticity and is therefore irrotational.
+
+**Overall, this velocity field is an example of a two-dimensional planar stagnation-point flow.**
+
