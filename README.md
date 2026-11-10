@@ -728,3 +728,13 @@ $$
 
 The vector field correctly points to the upper right throughout the domain. However, only some streamlines are shown if seed points are chosen on just one boundary. This field is mathematically valid, but it is not generally a physically plausible incompressible flow because its divergence is not zero.
 
+## Navier Stokes Derivation
+<img width="2019" height="2500" alt="nv1" src="https://github.com/user-attachments/assets/95a25740-4421-4dd5-8320-e855c481878f" />
+<img width="2019" height="2500" alt="nv2" src="https://github.com/user-attachments/assets/b9ad8dc3-ae70-4c58-8fc4-1017f93d24ff" />
+<img width="2019" height="2500" alt="nv3" src="https://github.com/user-attachments/assets/d12ec58d-50b2-4054-925c-e2919d04dda6" />
+<img width="2019" height="2500" alt="nv4" src="https://github.com/user-attachments/assets/176286b3-46b6-472e-894d-b5df4763be32" />
+<img width="2019" height="2500" alt="nv5" src="https://github.com/user-attachments/assets/b27ff2d8-f3bc-4576-a9de-df996eafcc64" />
+<img width="2019" height="2500" alt="nv6" src="https://github.com/user-attachments/assets/dba1db66-cab9-448e-b223-0c39126c6068" />
+<img width="2019" height="2500" alt="nv7" src="https://github.com/user-attachments/assets/1f33d14f-feb4-4758-ad09-2f8132610cf8" />
+
+
