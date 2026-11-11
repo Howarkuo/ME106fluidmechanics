@@ -728,7 +728,7 @@ $$
 
 The vector field correctly points to the upper right throughout the domain. However, only some streamlines are shown if seed points are chosen on just one boundary. This field is mathematically valid, but it is not generally a physically plausible incompressible flow because its divergence is not zero.
 
-## Navier Stokes Derivation
+# Navier Stokes Derivation
 <img width="2019" height="2500" alt="nv1" src="https://github.com/user-attachments/assets/95a25740-4421-4dd5-8320-e855c481878f" />
 <img width="2019" height="2500" alt="nv2" src="https://github.com/user-attachments/assets/b9ad8dc3-ae70-4c58-8fc4-1017f93d24ff" />
 <img width="2019" height="2500" alt="nv3" src="https://github.com/user-attachments/assets/d12ec58d-50b2-4054-925c-e2919d04dda6" />
@@ -737,7 +737,7 @@ The vector field correctly points to the upper right throughout the domain. Howe
 <img width="2019" height="2500" alt="nv6" src="https://github.com/user-attachments/assets/dba1db66-cab9-448e-b223-0c39126c6068" />
 <img width="2019" height="2500" alt="nv7" src="https://github.com/user-attachments/assets/1f33d14f-feb4-4758-ad09-2f8132610cf8" />
 
-### 2D- netNS()
+# 2D- netNS()
 assumes planar flow, \(\mathbf V=(u,v,0)\) with no \(z\)-dependence, and has no explicit body-force term (gravity). Its pressure variable p uses a scale that puts a coefficient of one in front of the pressure gradient.
 
 
