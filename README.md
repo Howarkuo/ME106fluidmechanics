@@ -736,6 +736,7 @@ The vector field correctly points to the upper right throughout the domain. Howe
 <img width="2019" height="2500" alt="nv5" src="https://github.com/user-attachments/assets/b27ff2d8-f3bc-4576-a9de-df996eafcc64" />
 <img width="2019" height="2500" alt="nv6" src="https://github.com/user-attachments/assets/dba1db66-cab9-448e-b223-0c39126c6068" />
 <img width="2019" height="2500" alt="nv7" src="https://github.com/user-attachments/assets/1f33d14f-feb4-4758-ad09-2f8132610cf8" />
+
 ### 2D- netNS()
 assumes planar flow, \(\mathbf V=(u,v,0)\) with no \(z\)-dependence, and has no explicit body-force term (gravity). Its pressure variable p uses a scale that puts a coefficient of one in front of the pressure gradient.
 
