@@ -737,9 +737,10 @@ The vector field correctly points to the upper right throughout the domain. Howe
 <img width="2019" height="2500" alt="nv6" src="https://github.com/user-attachments/assets/dba1db66-cab9-448e-b223-0c39126c6068" />
 <img width="2019" height="2500" alt="nv7" src="https://github.com/user-attachments/assets/1f33d14f-feb4-4758-ad09-2f8132610cf8" />
 
-# 2D- netNS()
+## Ａ. 2D- netNS()
 assumes planar flow, \(\mathbf V=(u,v,0)\) with no \(z\)-dependence, and has no explicit body-force term (gravity). Its pressure variable p uses a scale that puts a coefficient of one in front of the pressure gradient.
 
+\(\lambda_1=1\) as the reference because the material derivative gives the convection term a coefficient of one. It uses \(\lambda_2=0.01\) as the reference viscous coefficient for this benchmark. In dimensional equations \(\lambda_2\) corresponds to the kinematic viscosity \(\nu=\mu/\rho\). In nondimensional equations it corresponds to \(1/\mathrm{Re}\).
 
 | Lecture term | \(x\)-momentum in Python | \(y\)-momentum in Python |
 |---|---|---|
@@ -794,4 +795,32 @@ def net_NS(self, x, y, t):
     f_v = v_t + lambda_1*(u*v_x + v*v_y) + p_y - lambda_2*(v_xx + v_yy)
     
     return u, v, p, f_u, f_v
+```
+<img width="745" height="479" alt="Screenshot 2026-11-10 at 4 42 10 PM" src="https://github.com/user-attachments/assets/63a7f425-2915-4874-bbaf-8a2f5df5e6dc" />
+
+## B.Continuity and Fitting 
+The network predicts $$\(\psi\)$$ and $$\(p\)$$. TensorFlow’s tf.gradients then differentiates those predictions to obtain velocity and the derivatives used in the residuals:
+```python
+u = tf.gradients(psi, y)[0]
+v = -tf.gradients(psi, x)[0]
+```
+
+These definitions enforce continuity directly for a smooth $$\(\psi\)$$:
+$$\[
+u_x+v_y
+=\frac{\partial^2\psi}{\partial x\,\partial y}
+-\frac{\partial^2\psi}{\partial y\,\partial x}=0.
+\]
+So self.loss combines two velocity-data errors and two momentum residuals at the sampled training points:
+\[
+\mathcal L=\sum_n\left[
+(u_{\rm obs}-u_{\rm pred})^2+
+(v_{\rm obs}-v_{\rm pred})^2+
+f_u^2+f_v^2\right]_n.
+\]$$
+One evaluation detail matters in this script. The loss only sees the spatial gradients of pressure, so adding any spatially uniform \(C(t)\) to the predicted pressure leaves the residuals unchanged. The script compares raw pressures at snap = 100. To compare the spatial pressure fields at that snapshot, subtract each field’s spatial mean before computing the relative error:
+```python
+p_ref_centered = p_star - p_star.mean()
+p_pred_centered = p_pred - p_pred.mean()
+error_p = np.linalg.norm(p_ref_centered - p_pred_centered) / np.linalg.norm(p_ref_centered)
 ```
