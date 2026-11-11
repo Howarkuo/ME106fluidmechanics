@@ -810,15 +810,17 @@ $$\[
 u_x+v_y
 =\frac{\partial^2\psi}{\partial x\,\partial y}
 -\frac{\partial^2\psi}{\partial y\,\partial x}=0.
-\]
+\]$$
+
 So self.loss combines two velocity-data errors and two momentum residuals at the sampled training points:
-\[
+
+$$\[
 \mathcal L=\sum_n\left[
 (u_{\rm obs}-u_{\rm pred})^2+
 (v_{\rm obs}-v_{\rm pred})^2+
 f_u^2+f_v^2\right]_n.
 \]$$
-One evaluation detail matters in this script. The loss only sees the spatial gradients of pressure, so adding any spatially uniform \(C(t)\) to the predicted pressure leaves the residuals unchanged. The script compares raw pressures at snap = 100. To compare the spatial pressure fields at that snapshot, subtract each field’s spatial mean before computing the relative error:
+One evaluation detail matters in this script. The loss only sees the spatial gradients of pressure, so adding any spatially uniform $$\(C(t)\)$$ to the predicted pressure leaves the residuals unchanged. The script compares raw pressures at snap = 100. To compare the spatial pressure fields at that snapshot, subtract each field’s spatial mean before computing the relative error:
 ```python
 p_ref_centered = p_star - p_star.mean()
 p_pred_centered = p_pred - p_pred.mean()
