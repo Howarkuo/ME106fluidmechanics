@@ -799,6 +799,8 @@ def net_NS(self, x, y, t):
 <img width="745" height="479" alt="Screenshot 2026-11-10 at 4 42 10 PM" src="https://github.com/user-attachments/assets/63a7f425-2915-4874-bbaf-8a2f5df5e6dc" />
 
 ## B.Continuity and Fitting 
+<img width="2048" height="1423" alt="image" src="https://github.com/user-attachments/assets/71898797-f8a4-46c1-ac63-37bc205039c7" />
+
 The network predicts $$\(\psi\)$$ and $$\(p\)$$. TensorFlow’s tf.gradients then differentiates those predictions to obtain velocity and the derivatives used in the residuals:
 ```python
 u = tf.gradients(psi, y)[0]
