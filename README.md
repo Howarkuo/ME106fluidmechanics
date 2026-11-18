@@ -828,3 +828,6 @@ p_ref_centered = p_star - p_star.mean()
 p_pred_centered = p_pred - p_pred.mean()
 error_p = np.linalg.norm(p_ref_centered - p_pred_centered) / np.linalg.norm(p_ref_centered)
 ```
+## Practice Cases
+- Stagnant point for circulation
+- Lift force on a half-cylinder tent
