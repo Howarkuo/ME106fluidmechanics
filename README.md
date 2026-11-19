@@ -854,15 +854,33 @@ $$
 $$
 
 ### Comparison: Gradient vs. Divergence vs. Curl
+### Vector Calculus, Continuity, Euler, Bernoulli, and Navier–Stokes Equations
+
+Aim to connect vector-calculus operations to mass conservation, momentum conservation, potential flow, and numerical transport calculations. Unless otherwise indicated, use Cartesian coordinates, with velocity
+
+$$
+\mathbf{V}(x,y,z,t)=u\mathbf e_x+v\mathbf e_y+w\mathbf e_z,
+\qquad \nabla=\mathbf e_x\frac{\partial}{\partial x}+\mathbf e_y\frac{\partial}{\partial y}+\mathbf e_z\frac{\partial}{\partial z}.
+$$
+
+Here $\rho$ is density, $p$ is pressure, $\mu$ is dynamic viscosity, $\nu=\mu/\rho$ is kinematic viscosity (for constant density), and $\mathbf g=-g\mathbf e_z$ when $z$ points upward.
+
 
 | Operation | Input | Formula (3D Cartesian) | Del (∇) Operation | Physical Meaning |
 |---|---|---|---|---|
-| **Gradient** | Scalar field $f$ | $\nabla f=f_x\mathbf{e}_x+f_y\mathbf{e}_y+f_z\mathbf{e}_z$ | $\nabla f$ | Produces a **vector** pointing toward the steepest increase in the scalar field. Its magnitude is the maximum rate of increase per unit distance. |
+| **Gradient** | Scalar field $f$ | $\nabla f=f_x\mathbf{e}_x+f_y\mathbf{e}_y+f_z\mathbf{e}_z$ | $\nabla f$ | Produces a **vector** pointing toward the steepest increase in the scalar field. Its magnitude is the maximum rate of increase per unit distance. Direction and magnitude of maximum spatial increase; used for pressure and temperature gradients|
 | **Divergence** | Vector field $\mathbf{V}$ | $\nabla\cdot\mathbf{V}=\frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}+\frac{\partial w}{\partial z}$ | $\nabla\cdot\mathbf{V}$ | Produces a **scalar** measuring local net outward flux per unit volume. For a velocity field, it measures volumetric expansion or contraction rate. |
 | **Curl** | Vector field $\mathbf{V}$ | $\nabla\times\mathbf{V}=(w_y-v_z)\mathbf{e}_x+(u_z-w_x)\mathbf{e}_y+(v_x-u_y)\mathbf{e}_z$ | $\nabla\times\mathbf{V}$ | Produces a **vector** measuring local rotation. For a velocity field, this is vorticity, equal to twice the local angular rotation rate. |
 
 Here, subscripts indicate partial derivatives, e.g.,
 $f_x=\partial f/\partial x$ and $w_y=\partial w/\partial y$.
+
+### Useful physical laws
+
+- **Fourier's law:** $\mathbf q=-k\nabla T$ (heat conducts down the temperature gradient).
+- **Fick's law:** $\mathbf J_A=-D_{AB}\nabla c_A$ (diffusive species flux down the concentration gradient, in the simple constant-$D$ model).
+- **Vorticity:** $\boldsymbol\omega=\nabla\times\mathbf V$. In 2D, $\omega_z=\partial v/\partial x-\partial u/\partial y$.
+- **Irrotational flow:** $\nabla\times\mathbf V=\mathbf0$, which allows a *local* velocity potential $\mathbf V=\nabla\phi$. Global single-valuedness requires additional domain conditions.
 
 ### Applications in Transport Processes
 
@@ -948,4 +966,241 @@ curl_z = dvdx - dudy
 | Curl | Vector → Vector | Fluid vorticity |
 
 > **Remember:** Gradient describes how a scalar changes in space; divergence describes the net outward flux of a vector field; curl describes its local rotational tendency.
+
+## 2. Continuity Equation — Conservation of Mass
+
+### Integral control-volume form
+
+$$
+\boxed{\frac{d}{dt}\int_{CV}\rho\,dV+\oint_{CS}\rho\mathbf V\cdot\mathbf n\,dA=0}
+$$
+
+The first term is mass accumulation inside a fixed control volume; the second is net outward mass flow through its surface.
+
+Using the divergence theorem,
+
+$$
+\oint_{CS}\rho\mathbf V\cdot\mathbf n\,dA
+=\int_{CV}\nabla\cdot(\rho\mathbf V)\,dV.
+$$
+
+For an arbitrary fixed control volume this gives the **differential continuity equation**:
+
+$$
+\boxed{\frac{\partial\rho}{\partial t}+\nabla\cdot(\rho\mathbf V)=0}
+$$
+
+Expand with the product rule:
+
+$$
+\frac{\partial\rho}{\partial t}+\mathbf V\cdot\nabla\rho+\rho\nabla\cdot\mathbf V=0
+\quad\Longleftrightarrow\quad
+\boxed{\frac{D\rho}{Dt}+\rho\nabla\cdot\mathbf V=0},
+$$
+
+where $D/Dt=\partial/\partial t+\mathbf V\cdot\nabla$ is the **material derivative**.
+
+**Constant-density incompressible flow** ($D\rho/Dt=0$, $\rho\ne0$):
+
+$$
+\boxed{\nabla\cdot\mathbf V=0}
+\qquad\Longleftrightarrow\qquad
+\boxed{\frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}+\frac{\partial w}{\partial z}=0}.
+$$
+
+> **Important:** $\nabla\cdot\mathbf V=0$ is the kinematic incompressibility condition. A *steady* flow is not necessarily incompressible; steady means $\partial/\partial t=0$.
+
+## 3. Euler's Equation of Motion — Inviscid Momentum Balance
+
+Starting from the momentum balance for an inviscid fluid (neglecting viscous stresses), with gravitational body force $\rho\mathbf g$:
+
+$$
+\boxed{\rho\frac{D\mathbf V}{Dt}=-\nabla p+\rho\mathbf g}
+$$
+
+or, expanding the material derivative,
+
+$$
+\boxed{\frac{\partial\mathbf V}{\partial t}+(\mathbf V\cdot\nabla)\mathbf V=-\frac{1}{\rho}\nabla p+\mathbf g}.
+$$
+
+The left-hand side is **local acceleration + convective acceleration**. The right-hand side is **pressure force per unit mass + gravity**.
+
+### The vector identity needed for Bernoulli
+
+Define vorticity $\boldsymbol\omega=\nabla\times\mathbf V$. Then
+
+$$
+\boxed{(\mathbf V\cdot\nabla)\mathbf V
+=\nabla\left(\frac{|\mathbf V|^2}{2}\right)-\mathbf V\times\boldsymbol\omega}
+$$
+
+(equivalently $\nabla(|\mathbf V|^2/2)+\boldsymbol\omega\times\mathbf V$).
+
+For constant $g$ with $z$ upward, $\mathbf g=-\nabla(gz)$. Insert the identity into Euler's equation:
+
+$$
+\frac{\partial\mathbf V}{\partial t}
++\nabla\left(\frac{|\mathbf V|^2}{2}\right)
+-\mathbf V\times\boldsymbol\omega
+=-\frac{1}{\rho}\nabla p-\nabla(gz).
+$$
+
+For **constant density** $\rho$, group the gradients:
+
+$$
+\boxed{\frac{\partial\mathbf V}{\partial t}-\mathbf V\times\boldsymbol\omega
++\nabla\left(\frac{|\mathbf V|^2}{2}+\frac p\rho+gz\right)=\mathbf0.}
+$$
+
+## 4. Deriving Bernoulli's Equation from Euler's Vector Equation
+
+### Step A — Assume steady flow
+
+For $\partial\mathbf V/\partial t=\mathbf0$:
+
+$$
+\nabla B=\mathbf V\times\boldsymbol\omega,
+\qquad B\equiv\frac{|\mathbf V|^2}{2}+\frac p\rho+gz.
+$$
+
+### Step B — Project along a streamline
+
+Let $d\mathbf s$ be tangent to the local velocity, so $d\mathbf s\parallel\mathbf V$. Take the dot product with $d\mathbf s$:
+
+$$
+\nabla B\cdot d\mathbf s
+=(\mathbf V\times\boldsymbol\omega)\cdot d\mathbf s=0
+$$
+
+because a cross product with $\mathbf V$ is perpendicular to $\mathbf V$.
+
+As $\nabla B\cdot d\mathbf s=dB$ along the streamline,
+
+$$
+ dB=0
+\quad\Longrightarrow\quad
+\boxed{\frac{p}{\rho}+\frac{|\mathbf V|^2}{2}+gz=C_{\text{streamline}}.}
+$$
+
+Multiply by $\rho$ for the pressure form (constant $\rho$):
+
+$$
+\boxed{p+\frac12\rho|\mathbf V|^2+\rho gz=\text{constant along a streamline}.}
+$$
+
+Divide by $g$ for the **head form**:
+
+$$
+\boxed{\frac p{\rho g}+\frac{|\mathbf V|^2}{2g}+z=\text{constant along a streamline}.}
+$$
+
+### Step C — When is the Bernoulli constant the same across streamlines?
+
+If the flow is also **irrotational** ($\boldsymbol\omega=\mathbf0$), then from $\nabla B=\mathbf V\times\boldsymbol\omega$ we have $\nabla B=\mathbf0$. Hence $B$ is constant throughout a connected flow region, not merely along each streamline.
+
+### Assumptions / limits
+
+| Bernoulli result | Required conditions |
+|---|---|
+| Along each streamline | Steady, inviscid, constant-density fluid; conservative body force (gravity here); no pumps/turbines/energy losses in the modeled region. Irrotationality **not** required. |
+| Same constant throughout a connected region | Above conditions **plus irrotational flow**. |
+| Unsteady irrotational version | If $\mathbf V=\nabla\phi$ locally, integration gives $\partial\phi/\partial t+|\mathbf V|^2/2+p/\rho+gz=C(t)$, with suitable potential and density assumptions. |
+
+For a variable-density **barotropic** fluid, replace $p/\rho$ in the gradient integration by the pressure enthalpy integral $\int dp/\rho(p)$; $p/\rho$ is appropriate for constant density.
+
+## 5. Navier–Stokes Equation — Viscous Momentum Balance
+
+The Cauchy momentum equation is
+
+$$
+\boxed{\rho\frac{D\mathbf V}{Dt}=\nabla\cdot\boldsymbol\sigma+\rho\mathbf g},
+\qquad\boldsymbol\sigma=-p\mathbf I+\boldsymbol\tau.
+$$
+
+For an incompressible Newtonian fluid with **constant dynamic viscosity** $\mu$:
+
+$$
+\boldsymbol\tau=2\mu\mathbf E,
+\qquad\mathbf E=\frac12\left(\nabla\mathbf V+(\nabla\mathbf V)^T\right).
+$$
+
+Using $\nabla\cdot\mathbf V=0$ yields
+
+$$
+\boxed{\rho\left[\frac{\partial\mathbf V}{\partial t}+(\mathbf V\cdot\nabla)\mathbf V\right]
+=-\nabla p+\mu\nabla^2\mathbf V+\rho\mathbf g.}
+$$
+
+Equivalently, dividing by $\rho$ (constant density):
+
+$$
+\boxed{\frac{\partial\mathbf V}{\partial t}+(\mathbf V\cdot\nabla)\mathbf V
+=-\frac1\rho\nabla p+\nu\nabla^2\mathbf V+\mathbf g.}
+$$
+
+**In Cartesian components**, the $x$-momentum equation is
+
+$$
+\rho\left(\frac{\partial u}{\partial t}+u\frac{\partial u}{\partial x}+v\frac{\partial u}{\partial y}+w\frac{\partial u}{\partial z}\right)
+=-\frac{\partial p}{\partial x}+\mu\left(\frac{\partial^2u}{\partial x^2}+\frac{\partial^2u}{\partial y^2}+\frac{\partial^2u}{\partial z^2}\right)+\rho g_x.
+$$
+
+The $y$- and $z$-momentum equations are obtained by replacing $u,x,g_x$ with $v,y,g_y$ or $w,z,g_z$, respectively, and retaining all three convective derivatives.
+
+### Euler vs. Navier–Stokes vs. Bernoulli
+
+| Equation | Main role | Viscosity | What is solved / predicted? |
+|---|---|---|---|
+| **Continuity** | Conservation of mass | Not explicit | Density/velocity constraints |
+| **Euler** | Conservation of momentum for inviscid fluid | Neglected | Velocity and pressure fields |
+| **Navier–Stokes** | Conservation of momentum with viscosity | Included | Velocity and pressure fields, boundary layers |
+| **Bernoulli** | First integral of Euler along a streamline under its assumptions | Neglected | Relation among pressure, speed, and elevation |
+
+## 6. Links to Potential Flow and Numerical Calculations
+
+If $\nabla\times\mathbf V=\mathbf0$ locally, define a velocity potential $\mathbf V=\nabla\phi$. For an incompressible region:
+
+$$
+\nabla\cdot\mathbf V=0
+\quad\Longrightarrow\quad
+\boxed{\nabla^2\phi=0}.
+$$
+
+For a 2D incompressible flow, define a stream function:
+
+$$
+\boxed{u=\frac{\partial\psi}{\partial y},\qquad v=-\frac{\partial\psi}{\partial x}.}
+$$
+
+Its out-of-plane vorticity is
+
+$$
+\boxed{\omega_z=\frac{\partial v}{\partial x}-\frac{\partial u}{\partial y}=-\nabla^2\psi.}
+$$
+
+### Python: numerical divergence, gradient, and curl
+
+```python
+import numpy as np
+
+# Grid arrays use axis order (z, y, x), with uniform spacings dz, dy, dx.
+# f, u, v, w must all have the same 3D shape.
+
+dfdz, dfdy, dfdx = np.gradient(f, dz, dy, dx, edge_order=2)
+grad_f = (dfdx, dfdy, dfdz)
+
+dudz, dudy, dudx = np.gradient(u, dz, dy, dx, edge_order=2)
+dvdz, dvdy, dvdx = np.gradient(v, dz, dy, dx, edge_order=2)
+dwdz, dwdy, dwdx = np.gradient(w, dz, dy, dx, edge_order=2)
+
+divergence = dudx + dvdy + dwdz
+curl_x = dwdy - dvdz
+curl_y = dudz - dwdx
+curl_z = dvdx - dudy
+```
+
+These NumPy derivatives are numerical approximations. On a sufficiently smooth uniformly spaced grid, `np.gradient` uses second-order central differences at interior points; with `edge_order=2`, it uses second-order one-sided stencils at boundaries.
+
+---
 
