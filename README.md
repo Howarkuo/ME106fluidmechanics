@@ -1204,3 +1204,136 @@ These NumPy derivatives are numerical approximations. On a sufficiently smooth u
 
 ---
 
+## 7. Python Grid Setup for the Taylor–Green Vortex (CHMENG 250 Homework 2)
+
+Before evaluating velocity, divergence, vorticity, or temperature gradients, create a **uniform two-dimensional Cartesian grid**:
+
+```python
+import numpy as np
+
+L = 2.0                 # Half-width of the domain (not the full width)
+U0 = 1.0                # Characteristic velocity scale
+N = 101                 # Grid points along EACH axis
+x = np.linspace(-L, L, N)
+y = np.linspace(-L, L, N)
+X, Y = np.meshgrid(x, y)
+dx = x[1] - x[0]
+dy = y[1] - y[0]
+```
+
+### 7.1 Line-by-line explanation
+
+| Python expression | Meaning | Value / resulting shape |
+|---|---|---|
+| `L = 2.0` | Domain extends from $-L$ to $+L$ along both axes | $-2 \le x,y \le 2$; full width $2L=4$ |
+| `U0 = 1.0` | Velocity amplitude used in the Taylor–Green equations | $U_0=1$ (units depend on the model) |
+| `N = 101` | Number of nodes **per coordinate direction**, including endpoints | $101$ nodes per axis |
+| `np.linspace(-L, L, N)` | Creates equally spaced 1D coordinates from $-L$ through $+L$ | `x.shape == y.shape == (101,)` |
+| `np.meshgrid(x, y)` | Converts the 1D coordinate arrays into a 2D Cartesian grid (default `indexing='xy'`) | `X.shape == Y.shape == (101, 101)` |
+| `x[1] - x[0]` | Horizontal spacing between adjacent nodes | $\Delta x=0.04$ |
+| `y[1] - y[0]` | Vertical spacing between adjacent nodes | $\Delta y=0.04$ |
+
+The spacing uses $N-1$ **intervals** between $N$ nodes:
+
+$$
+\boxed{\Delta x=\Delta y=\frac{(+L)-(-L)}{N-1}
+=\frac{2L}{N-1}=\frac{4}{100}=0.04.}
+$$
+
+Thus the grid contains $101\times101=10{,}201$ nodes, whereas each coordinate direction contains $100$ intervals.
+
+### 7.2 `linspace` versus `meshgrid`
+
+`np.linspace(start, stop, num)` constructs **one-dimensional** coordinates, including both endpoints by default. To see how `meshgrid` works, use a smaller illustrative example:
+
+```python
+x_small = np.array([-2, 0, 2])
+y_small = np.array([-2, 0, 2])
+X_small, Y_small = np.meshgrid(x_small, y_small)
+
+print(X_small)
+# [[-2  0  2]
+#  [-2  0  2]
+#  [-2  0  2]]
+
+print(Y_small)
+# [[-2 -2 -2]
+#  [ 0  0  0]
+#  [ 2  2  2]]
+```
+
+The two arrays together store the coordinates of each grid node:
+
+$$
+\boxed{(X[j,i],\,Y[j,i])=(x[i],\,y[j]).}
+$$
+
+**NumPy array convention:** with default `meshgrid` indexing, axis 0 (rows, index `j`) corresponds to $y$ and axis 1 (columns, index `i`) corresponds to $x$. In other words, a field sampled at the grid points is indexed as `field[j, i]`.
+
+### 7.3 Evaluate the Taylor–Green velocity everywhere
+
+The prescribed velocity field is
+
+$$
+\begin{aligned}
+u(x,y)&=U_0\sin\left(\frac{\pi x}{L}\right)\cos\left(\frac{\pi y}{L}\right),\\
+v(x,y)&=-U_0\cos\left(\frac{\pi x}{L}\right)\sin\left(\frac{\pi y}{L}\right).
+\end{aligned}
+$$
+
+```python
+u = U0 * np.sin(np.pi * X / L) * np.cos(np.pi * Y / L)
+v = -U0 * np.cos(np.pi * X / L) * np.sin(np.pi * Y / L)
+
+print(X.shape, Y.shape)   # (101, 101) (101, 101)
+print(u.shape, v.shape)   # (101, 101) (101, 101)
+```
+
+NumPy **vectorizes** the sine, cosine, and arithmetic operations: they run elementwise over all $10{,}201$ nodes, so no explicit Python `for` loop is necessary.
+
+### 7.4 Why the spacings `dx` and `dy` matter
+
+Central finite differences approximate a partial derivative using neighbors on both sides of an **interior** grid node:
+
+$$
+\left.\frac{\partial u}{\partial x}\right|_{i,j}
+\approx\frac{u_{i+1,j}-u_{i-1,j}}{2\Delta x},
+\qquad
+\left.\frac{\partial v}{\partial y}\right|_{i,j}
+\approx\frac{v_{i,j+1}-v_{i,j-1}}{2\Delta y}.
+$$
+
+In NumPy, rows correspond to $y$ and columns to $x$:
+
+```python
+dudx_num = (u[1:-1, 2:] - u[1:-1, :-2]) / (2 * dx)
+dvdy_num = (v[2:, 1:-1] - v[:-2, 1:-1]) / (2 * dy)
+div_num = dudx_num + dvdy_num
+
+print(dudx_num.shape)   # (99, 99)
+print(dvdy_num.shape)   # (99, 99)
+print(div_num.shape)    # (99, 99)
+```
+
+- `1:-1`: select interior rows or columns, leaving out boundary nodes.
+- `2:` and `:-2`: select the right- and left-shifted neighboring columns, respectively.
+- `2:, 1:-1` and `:-2, 1:-1`: select neighboring rows above and below.
+- The denominator is **`2 * dx`** (or `2 * dy`) because the two sampled neighbors are two grid intervals apart.
+- Output size is $(N-2)\times(N-2)=(99,99)$, since central differences cannot use the outermost nodes without additional boundary formulas.
+
+For this smooth field, the central-difference truncation error at interior points is $O(\Delta x^2)$ or $O(\Delta y^2)$, meaning the leading error is approximately four times smaller when the spacing is halved.
+
+### 7.5 Grid resolution versus computational cost
+
+| `N` | Nodes in 2D (`N**2`) | $\Delta x=\Delta y=4/(N-1)$ |
+|---:|---:|---:|
+| 11 | 121 | 0.4 |
+| 21 | 441 | 0.2 |
+| 51 | 2,601 | 0.08 |
+| 101 | 10,201 | 0.04 |
+| 201 | 40,401 | 0.02 |
+
+Increasing `N` reduces grid spacing and generally improves the accuracy of finite differences for smooth fields, but costs more memory and computation. For a square 2D grid, the number of nodes grows as $N^2$.
+
+**Workflow summary:** define the domain $\to$ construct 1D coordinates $\to$ create the 2D grid $\to$ evaluate velocity/temperature arrays $\to$ approximate spatial derivatives.
+
