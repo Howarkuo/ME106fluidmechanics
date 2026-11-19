@@ -831,3 +831,121 @@ error_p = np.linalg.norm(p_ref_centered - p_pred_centered) / np.linalg.norm(p_re
 ## Practice Cases
 - Stagnant point for circulation
 - Lift force on a half-cylinder tent
+
+
+## Vector Calculus: Gradient, Divergence, and Curl
+
+The **del operator** (∇) in 3D Cartesian coordinates is
+
+$$
+\nabla =
+\mathbf{e}_x\frac{\partial}{\partial x}
++\mathbf{e}_y\frac{\partial}{\partial y}
++\mathbf{e}_z\frac{\partial}{\partial z}
+$$
+
+Let the scalar field be $f(x,y,z)$ and the vector field be
+
+$$
+\mathbf{V}(x,y,z)
+=u(x,y,z)\mathbf{e}_x
++v(x,y,z)\mathbf{e}_y
++w(x,y,z)\mathbf{e}_z.
+$$
+
+### Comparison: Gradient vs. Divergence vs. Curl
+
+| Operation | Input | Formula (3D Cartesian) | Del (∇) Operation | Physical Meaning |
+|---|---|---|---|---|
+| **Gradient** | Scalar field $f$ | $\nabla f=f_x\mathbf{e}_x+f_y\mathbf{e}_y+f_z\mathbf{e}_z$ | $\nabla f$ | Produces a **vector** pointing toward the steepest increase in the scalar field. Its magnitude is the maximum rate of increase per unit distance. |
+| **Divergence** | Vector field $\mathbf{V}$ | $\nabla\cdot\mathbf{V}=\frac{\partial u}{\partial x}+\frac{\partial v}{\partial y}+\frac{\partial w}{\partial z}$ | $\nabla\cdot\mathbf{V}$ | Produces a **scalar** measuring local net outward flux per unit volume. For a velocity field, it measures volumetric expansion or contraction rate. |
+| **Curl** | Vector field $\mathbf{V}$ | $\nabla\times\mathbf{V}=(w_y-v_z)\mathbf{e}_x+(u_z-w_x)\mathbf{e}_y+(v_x-u_y)\mathbf{e}_z$ | $\nabla\times\mathbf{V}$ | Produces a **vector** measuring local rotation. For a velocity field, this is vorticity, equal to twice the local angular rotation rate. |
+
+Here, subscripts indicate partial derivatives, e.g.,
+$f_x=\partial f/\partial x$ and $w_y=\partial w/\partial y$.
+
+### Applications in Transport Processes
+
+**1. Gradient — Heat Transfer**
+
+Fourier's law:
+
+$$
+\mathbf{q}=-k\nabla T
+$$
+
+- $\nabla T$: direction of greatest temperature increase.
+- $\mathbf{q}$: conductive heat flux.
+- The negative sign indicates heat flows toward lower temperature.
+
+**2. Divergence — Mass Conservation**
+
+For constant-density incompressible flow:
+
+$$
+\nabla\cdot\mathbf{V}=0
+$$
+
+In Cartesian coordinates:
+
+$$
+\frac{\partial u}{\partial x}
++\frac{\partial v}{\partial y}
++\frac{\partial w}{\partial z}=0
+$$
+
+The net volume flux out of an infinitesimal fluid element is zero.
+
+**3. Curl — Fluid Rotation and Vorticity**
+
+$$
+\boldsymbol{\omega}=\nabla\times\mathbf{V}
+$$
+
+For 2D flow, $w=0$ and $\partial/\partial z=0$, so
+
+$$
+\boxed{
+\omega_z=
+\frac{\partial v}{\partial x}
+-\frac{\partial u}{\partial y}
+}
+$$
+
+- $\omega_z>0$: counterclockwise local rotation.
+- $\omega_z<0$: clockwise local rotation.
+- $\omega_z=0$: locally irrotational flow.
+
+### Python Implementation (NumPy)
+
+For 3D arrays with axis order `(z, y, x)`:
+
+```python
+import numpy as np
+
+# Scalar field gradient
+dfdz, dfdy, dfdx = np.gradient(f, dz, dy, dx)
+
+# Vector field divergence
+dudz, dudy, dudx = np.gradient(u, dz, dy, dx)
+dvdz, dvdy, dvdx = np.gradient(v, dz, dy, dx)
+dwdz, dwdy, dwdx = np.gradient(w, dz, dy, dx)
+
+div_V = dudx + dvdy + dwdz
+
+# Vector field curl
+curl_x = dwdy - dvdz
+curl_y = dudz - dwdx
+curl_z = dvdx - dudy
+```
+
+### Key Distinction
+
+| Operation | Input → Output | Transport Example |
+|---|---|---|
+| Gradient | Scalar → Vector | Temperature gradient |
+| Divergence | Vector → Scalar | Incompressible continuity |
+| Curl | Vector → Vector | Fluid vorticity |
+
+> **Remember:** Gradient describes how a scalar changes in space; divergence describes the net outward flux of a vector field; curl describes its local rotational tendency.
+
