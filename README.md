@@ -1337,3 +1337,31 @@ Increasing `N` reduces grid spacing and generally improves the accuracy of finit
 
 **Workflow summary:** define the domain $\to$ construct 1D coordinates $\to$ create the 2D grid $\to$ evaluate velocity/temperature arrays $\to$ approximate spatial derivatives.
 
+---
+## Part 1 — Velocity Field and Streamlines
+
+We use the **Taylor–Green vortex**:
+
+$$u = U_0 \sin(\pi x/L)\cos(\pi y/L), \quad v = -U_0 \cos(\pi x/L)\sin(\pi y/L)$$
+
+This field is an exact **steady solution of the incompressible Euler equations**: its convective acceleration is a pure gradient, which the pressure field absorbs. It is *not* a steady solution of Navier–Stokes, since $\nu\nabla^2\mathbf{u} = -2\nu(\pi/L)^2\mathbf{u} \neq 0$; the Navier–Stokes solution is this field multiplied by the decay factor $e^{-2\nu\pi^2 t/L^2}$. Everything below is evaluated at a single instant, so the distinction does not affect the computation — but it does matter for what the field *is*.
+
+### 1a: Define the velocity field and verify $\nabla \cdot \mathbf{u} = 0$
+
+Evaluate $u$ and $v$ on the meshgrid. Then compute $\partial u/\partial x$ and $\partial v/\partial y$ **analytically** (by hand, then code the result) and confirm that their sum vanishes. This is the incompressibility constraint — it must hold for any physically realizable flow of a constant-density fluid.
+
+```python
+# TODO: Define u and v on the grid
+u = U0 * np.sin(np.pi * X / L) * np.cos(np.pi * Y / L)
+v = -U0 * np.cos(np.pi * X / L) * np.sin(np.pi * Y / L)
+
+# TODO: Compute du/dx and dv/dy analytically, then check divergence = 0
+dudx = (U0 * np.pi / L) * np.cos(np.pi * X / L) * np.cos(np.pi * Y / L)
+dvdy = -(U0 * np.pi / L) * np.cos(np.pi * X / L) * np.cos(np.pi * Y / L)
+div = dudx + dvdy
+
+print(f"Max |div(u)|: {np.max(np.abs(div)):.2e}")
+
+#Max |div(u)|: 0.00e+00
+```
+
