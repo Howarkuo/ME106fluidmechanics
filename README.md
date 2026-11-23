@@ -225,8 +225,9 @@ This value is *conditional*, not a verified measured flow rate. If the quoted tu
 Even when $\dot{m}_{\text{in}} = \dot{m}_{\text{out}}$, the downstream velocity profile need not be uniform: lower streamwise velocity in a wake can be accompanied by higher velocity elsewhere in the cross section. Without a measurement of $u_2(y,z)$, the outlet profile cannot be calculated. The mass balance is nevertheless valid under its assumptions.
 
 ### Fog Streaklines, Material Derivative, and Streamline Curvature
+<img width="824" height="430" alt="Screenshot 2026-11-23 at 1 41 27 PM" src="https://github.com/user-attachments/assets/ec32d168-bc4b-4878-afa0-1a9dbd5a7089" />
 
-In the Eulerian description, velocity is a field $\mathbf{V}(x,y,z,t)$, whereas the Lagrangian description follows a particle position $\mathbf{x}_p(t)$ satisfying
+In the Eulerian description, velocity is a field $\mathbf{V}(x,y,z,t)$, whereas the description follows a particle position $\mathbf{x}_p(t)$ satisfying
 
 $$\frac{d\mathbf{x}_p}{dt} = \mathbf{V}\left(\mathbf{x}_p(t),t\right)$$
 
@@ -1370,3 +1371,121 @@ print(f"Max |div(u)|: {np.max(np.abs(div)):.2e}")
 - The upward lift force on a cylindrical (tunnel) tent caused by a pressure difference between the air inside the tent and the fast-moving air flowing over the outside.
 <img width="1448" height="1086" alt="image" src="https://github.com/user-attachments/assets/9a9460ca-7997-49e5-a395-389700afa4ce" />
 
+# Problem 2 — Lift Force on a Half-Cylinder Tent
+<img width="604" height="290" alt="image" src="https://github.com/user-attachments/assets/be8824e1-727e-4d59-bf12-f64a81306014" />
+
+
+This problem models a tent as a semicylinder resting on the ground to calculate the upward aerodynamic force caused by the pressure difference between the inside and outside of the tent.
+
+## Given Data
+
+* **Geometry:** $R = 2\ \mathrm{m}$, $L = 3\ \mathrm{m}$
+* **Freestream Wind Speed:** $U = 40\ \mathrm{mph}$
+* **Temperature:** $T = 40^\circ\mathrm{F}$
+* **Pressure:** $P_{\text{inside}} = P_\infty = 740\ \mathrm{mmHg}$
+
+---
+
+## Step-by-Step Solution
+
+### Step 1: Understand the Geometry
+The semicircular roof covers the angular range:
+$$\boxed{0 \le \theta \le \pi}$$
+
+The wind is modeled using ideal potential flow around a circular cylinder, where the ground acts as a symmetry plane for the upper half of the ideal flow.
+
+### Step 2: Find the Velocity Over the Roof
+For noncirculatory potential flow around a cylinder, the surface tangential velocity is:
+$$\boxed{V_\theta = -2U\sin\theta}$$
+
+The surface speed is therefore:
+$$|\mathbf{V}| = 2U\sin\theta \qquad (0 \le \theta \le \pi)$$
+
+At the top of the tent ($\theta = \frac{\pi}{2}$):
+$$\boxed{|\mathbf{V}| = 2U}$$
+
+The wind speeds up as it passes over the roof, reaching twice the freestream speed at the top in this ideal model.
+
+### Step 3: Apply Bernoulli's Equation
+Applying Bernoulli's equation outside the tent:
+$$P_{\text{outside}} + \frac{1}{2}\rho |\mathbf{V}|^2 = P_\infty + \frac{1}{2}\rho U^2$$
+
+Rearranging for $P_{\text{outside}}$:
+$$P_{\text{outside}} = P_\infty + \frac{1}{2}\rho(U^2 - |\mathbf{V}|^2)$$
+
+Substituting $|\mathbf{V}| = 2U\sin\theta$:
+$$\boxed{P_{\text{outside}}(\theta) = P_\infty + \frac{1}{2}\rho U^2(1 - 4\sin^2\theta)}$$
+
+Since the inside pressure is $P_\infty$, the pressure difference acting outward on the roof is $\Delta P = P_{\text{inside}} - P_{\text{outside}}$:
+$$\boxed{\Delta P(\theta) = \frac{1}{2}\rho U^2(4\sin^2\theta - 1)}$$
+
+At the roof top ($\theta = \pi/2$), this creates a strong upward pressure differential:
+$$\Delta P_{\text{top}} = \frac{3}{2}\rho U^2$$
+
+### Step 4: Integrate Pressure Over the Roof to Obtain Lift
+Pressure acts normal to the curved roof. For a small surface element of angular width $d\theta$, cylinder radius $R$, and length $L$:
+$$dA = RL\,d\theta$$
+
+Its vertical projected area is:
+$$dA_y = dA\sin\theta$$
+
+Therefore, the differential upward force is:
+$$dF_y = \Delta P(\theta)\sin\theta\,RL\,d\theta$$
+
+Integrating around the upper semicircle:
+$$F_y = \int_0^\pi \Delta P(\theta)\sin\theta\,RL\,d\theta$$
+
+Substituting the pressure difference $\Delta P(\theta)$ and expanding:
+$$F_y = \frac{1}{2}\rho U^2 RL \int_0^\pi (4\sin^2\theta - 1)\sin\theta\,d\theta$$
+$$F_y = \frac{1}{2}\rho U^2 RL \left[ 4\int_0^\pi \sin^3\theta\,d\theta - \int_0^\pi \sin\theta\,d\theta \right]$$
+
+Using the definite integral values $\int_0^\pi \sin^3\theta\,d\theta = \frac{4}{3}$ *(see Appendix for derivation)* and $\int_0^\pi \sin\theta\,d\theta = 2$:
+$$F_y = \frac{1}{2}\rho U^2 RL \left[ 4\left(\frac{4}{3}\right) - 2 \right] = \frac{1}{2}\rho U^2 RL \left(\frac{10}{3}\right)$$
+
+Our final lift equation is:
+$$\boxed{F_y = \frac{5}{3}\rho U^2 RL}$$
+
+### Step 5: Convert the Given Units
+* **Wind speed:** $U = 40\ \mathrm{mph} = 17.8816\ \mathrm{m/s}$
+* **Temperature:** $T = 40^\circ\mathrm{F} = 277.59\ \mathrm{K}$
+* **Pressure:** $P_\infty = 740\ \mathrm{mmHg} \approx 98{,}658\ \mathrm{Pa}$
+
+Using the ideal-gas law for dry air with $R_{\mathrm{air}} = 287.05\ \mathrm{J/(kg\cdot K)}$:
+$$\rho = \frac{P_\infty}{R_{\mathrm{air}}T} \implies \boxed{\rho \approx 1.238\ \mathrm{kg/m^3}}$$
+
+### Step 6: Calculate the Lift
+Substituting the converted values into our lift equation:
+$$F_y = \frac{5}{3}(1.238)(17.8816)^2(2)(3)$$
+$$\boxed{F_y \approx 3.96 \times 10^3\ \mathrm{N}}$$
+
+---
+
+## Final Result & Physical Interpretation
+
+* **Upward Aerodynamic Force:** **$3.96\ \mathrm{kN}$** (approximately **$890\ \mathrm{lbf}$** upward)
+* *Note:* This represents the net vertical pressure force on the curved tent roof, excluding the tent's weight, structural restraints, and any pressure forces on a floor.
+
+### Physical Interpretation
+1. **Pressure Regions:** The wind creates two distinct pressure zones around the tent:
+   * **Leading and trailing edges:** Local velocity is small, keeping external pressure relatively high and contributing downward pressure forces.
+   * **Top of the roof:** External velocity is much higher, dropping the external pressure and allowing the higher internal pressure to push upward. The upward contribution dominates over the full integral.
+2. **Model Limitations:** A real tent will not follow this exact ideal pressure distribution because viscous effects cause the flow to separate, form a wake, and become turbulent. Thus, this result serves as an ideal potential-flow estimate rather than an exact real-world wind load.
+
+---
+
+## Appendix: Evaluating $\int_0^\pi \sin^3\theta\,d\theta$
+
+1. **Rewrite using the Pythagorean identity:**
+   Split $\sin^3\theta$ into $\sin^2\theta \cdot \sin\theta$ and substitute $\sin^2\theta = 1 - \cos^2\theta$:
+   $$\int_0^\pi (1 - \cos^2\theta)\sin\theta\,d\theta$$
+
+2. **Apply $u$-substitution:**
+   Let $u = \cos\theta$, so $du = -\sin\theta\,d\theta$. Update the limits of integration:
+   * When $\theta = 0 \implies u = \cos(0) = 1$
+   * When $\theta = \pi \implies u = \cos(\pi) = -1$
+
+   Substitute and flip the limits to remove the negative sign:
+   $$\int_1^{-1} -(1 - u^2)\,du = \int_{-1}^1 (1 - u^2)\,du$$
+
+3. **Evaluate the definite integral:**
+   $$\left[ u - \frac{u^3}{3} \right]_{-1}^1 = \left(1 - \frac{1^3}{3}\right) - \left(-1 - \frac{(-1)^3}{3}\right) = \frac{2}{3} - \left(-\frac{2}{3}\right) = \frac{4}{3}$$
