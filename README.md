@@ -1365,3 +1365,8 @@ print(f"Max |div(u)|: {np.max(np.abs(div)):.2e}")
 #Max |div(u)|: 0.00e+00
 ```
 
+## HW8,9, Midterm3, Buckingham pi theorem
+- Stagnation point for circulation
+- The upward lift force on a cylindrical (tunnel) tent caused by a pressure difference between the air inside the tent and the fast-moving air flowing over the outside.
+<img width="1448" height="1086" alt="image" src="https://github.com/user-attachments/assets/9a9460ca-7997-49e5-a395-389700afa4ce" />
+
