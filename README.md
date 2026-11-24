@@ -1490,3 +1490,101 @@ $$\boxed{F_y \approx 3.96 \times 10^3\ \mathrm{N}}$$
 
 3. **Evaluate the definite integral:**
    $$\left[ u - \frac{u^3}{3} \right]_{-1}^1 = \left(1 - \frac{1^3}{3}\right) - \left(-1 - \frac{(-1)^3}{3}\right) = \frac{2}{3} - \left(-\frac{2}{3}\right) = \frac{4}{3}$$
+
+
+# Problem 3 — Gravity-driven flow between vertical plates, by navier stokes meomentum, apply boundary condition for velocity profile 
+   
+<img width="604" height="708" alt="Screenshot 2026-11-23 at 9 03 42 PM" src="https://github.com/user-attachments/assets/9c0aabf7-da16-4475-a941-8979ef9fef99" />
+
+> **Problem Statement:** A viscous liquid of constant density $\rho$ and viscosity $\mu$ flows between two parallel plates a distance $2h$ apart. The flow is due only to gravity, not any applied pressure gradient. Assume the flow is fully developed and steady. Set up and solve the Navier–Stokes equation for the velocity profile $w(x)$.
+
+---
+
+## Geometry & Coordinate System
+
+The two stationary vertical plates are located at
+
+$$x = -h, \qquad x = +h$$
+
+and separated by $2h$. Gravity acts downward along the $z$-axis, which is also the positive direction of the velocity $w(x)$.
+
+---
+
+## Step 1: Simplify the Navier–Stokes Equation
+
+For steady, fully developed, unidirectional flow between vertical plates:
+
+$$\mathbf{V} = w(x)\mathbf{e}_z$$
+
+In the full $z$-momentum Navier–Stokes equation, the left-hand side consists of local acceleration plus the convective term $(\mathbf{V} \cdot \nabla)w$:
+
+$$\rho \left( \frac{\partial w}{\partial t} + u\frac{\partial w}{\partial x} + v\frac{\partial w}{\partial y} + w\frac{\partial w}{\partial z} \right) = -\frac{\partial P}{\partial z} + \mu \left( \frac{\partial^2 w}{\partial x^2} + \frac{\partial^2 w}{\partial y^2} + \frac{\partial^2 w}{\partial z^2} \right) + \rho g$$
+
+### Why the Left-Hand Side Equals Zero
+
+The `0` on the left-hand side represents **zero total fluid acceleration**, meaning viscous drag from the walls and pressure forces completely balance gravity so fluid particles fall at a constant speed. Each of the four acceleration terms drops to zero based on the flow conditions:
+
+* **Steady flow ($\frac{\partial w}{\partial t} = 0$):** Because the flow is steady, the velocity at any fixed location does not change over time.
+* **Unidirectional velocity ($u = 0, \, v = 0$):** Since $\mathbf{V} = w(x)\mathbf{e}_z$, there is no velocity component across the gap ($u = 0$) or along the plate width ($v = 0$), which immediately eliminates $u\frac{\partial w}{\partial x} = 0$ and $v\frac{\partial w}{\partial y} = 0$. Physically, fluid particles move strictly straight down in their own lanes and never cross into faster or slower layers.
+* **Fully developed flow ($\frac{\partial w}{\partial z} = 0$):** Because the flow is fully developed, the velocity profile $w(x)$ does not change along the vertical direction $z$, making $w\frac{\partial w}{\partial z} = 0$.
+
+With $\frac{\partial^2 w}{\partial y^2} = 0$ (2D flow) and $\frac{\partial^2 w}{\partial z^2} = 0$ (fully developed), the $z$-momentum equation reduces to:
+
+$$0 = -\frac{\partial P}{\partial z} + \mu\frac{d^2w}{dx^2} + \rho g$$
+
+The problem states that there is no applied pressure gradient:
+
+$$\frac{\partial P}{\partial z} = 0$$
+
+Hence, the governing differential equation is:
+
+$$\boxed{\mu\frac{d^2w}{dx^2} = -\rho g}$$
+
+---
+
+## Step 2: Integrate Twice
+
+Dividing by $\mu$ and integrating with respect to $x$ once gives the velocity gradient:
+
+$$\frac{dw}{dx} = -\frac{\rho g}{\mu}x + C_1$$
+
+Integrating a second time with respect to $x$ gives the general velocity profile:
+
+$$w(x) = -\frac{\rho g}{2\mu}x^2 + C_1x + C_2$$
+
+---
+
+## Step 3: Apply No-Slip Boundary Conditions
+
+At both stationary vertical walls, the fluid velocity is zero:
+
+$$w(-h) = 0, \qquad w(h) = 0$$
+
+Evaluating at $x = \pm h$:
+
+$$0 = -\frac{\rho g}{2\mu}h^2 - C_1h + C_2$$
+
+$$0 = -\frac{\rho g}{2\mu}h^2 + C_1h + C_2$$
+
+Subtracting these two equations gives:
+
+$$C_1 = 0$$
+
+Substituting $C_1 = 0$ back into $w(h) = 0$ yields:
+
+$$C_2 = \frac{\rho gh^2}{2\mu}$$
+
+---
+
+## Final Velocity Profile
+
+Substituting $C_1$ and $C_2$ back into $w(x)$ gives the parabolic velocity profile:
+
+$$\boxed{w(x) = \frac{\rho g}{2\mu}(h^2 - x^2)}$$
+
+The profile is symmetric, with its maximum velocity occurring at the centerline ($x = 0$):
+
+$$\boxed{w_{\max} = w(0) = \frac{\rho gh^2}{2\mu}}$$
+
+> **Note:** Unlike Problem 3 (falling film on an inclined plane), both boundaries here are solid walls with no-slip conditions. Therefore, the maximum velocity occurs in the middle of the channel rather than at a free surface.
+
